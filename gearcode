@@ -1,0 +1,81 @@
+# import pandas as pd
+
+# Taking input data from the user for the number of teeth
+
+pdr=int(input('Enter the primary drive gear teeth: '))
+pdn=int(input('Enter the primary driven gear teeth: '))
+sdr=int(input('Enter the secondary drive gear teeth: '))
+sdn=int(input('Enter the secondary driven gear teeth: '))
+
+# Generating required ratios of tooth
+
+a=[pdr,pdn,sdr,sdn]
+pR=float(a[1]/a[0]) 
+sR=float(a[3]/a[2])   
+b=[pR,sR]
+odr=float(b[0]*b[1])
+uniq=float(a[2]/pR)
+
+# The required condition of minimum no of tooth is fed and the cutoff value is set
+
+if a[0]>=22 and a[0]<=30 and a[2]>=21 and a[2]<=30:
+    p1meshing_order=a[0]
+    p2meshing_order=p1meshing_order*2
+    p3meshing_order=p1meshing_order*3
+    p4meshing_order=p1meshing_order*4
+    s1meshing_order=uniq
+    s2meshing_order=s1meshing_order*2
+    s3meshing_order=s1meshing_order*3
+    s4meshing_order=s1meshing_order*4
+    cutoff_value1=p1meshing_order-2*uniq
+    cutoff_value2=p1meshing_order-3*uniq
+    cutoff_value3=p1meshing_order-4*uniq
+    print('The primary ratio is ')
+    print(b[0])
+    print('The secondary ratio is ')
+    print(b[1])
+    print('The overall drive ratio is ')
+    print(odr)
+    print('The primary meshing order are: ')
+    print(p1meshing_order,p2meshing_order,p3meshing_order,p4meshing_order)
+    print('The secondary meshing order are: ')
+    print(s1meshing_order,s2meshing_order,s3meshing_order,s4meshing_order)
+    
+#  The drive gear tooth is iterated to meet the required cutoff value
+
+    while(a[0]<=29 and (abs(cutoff_value1)<=4 or abs(cutoff_value2)<=4 or abs(cutoff_value3)<=4)):
+        a[0]=a[0]+1
+        pR=float(a[1]/a[0])
+        uniq=float(a[2]/pR)
+        cutoff_value1=a[0]-2*uniq
+        cutoff_value2=a[0]-3*uniq
+        cutoff_value3=a[0]-4*uniq
+        
+#  The drive gear tooth is iterated to meet the required cutoff value
+
+    while(a[2]<=29 and (abs(cutoff_value1)<=4 or abs(cutoff_value2)<=4 or abs(cutoff_value3)<=4)):
+        a[2]=a[2]+1
+        pR=float(a[1]/a[0])
+        uniq=float(a[2]/pR)
+        cutoff_value1=a[0]-2*uniq
+        cutoff_value2=a[0]-3*uniq
+        cutoff_value3=a[0]-4*uniq
+    if(abs(cutoff_value1)<=4 or abs(cutoff_value2)<=4 or abs(cutoff_value3)<=4):
+        print('The minimum value of 4 not possible.')
+        
+# The final information of all the gears and other related ratios are displayed.
+
+    print('The updated primary drive gear is:')
+    print(a[0])   
+    print('The updated primary driven gear is:')
+    print(a[1])  
+    print('The updated secondary drive gear is:')
+    print(a[2])  
+    print('The updated secondary driven gear is:')
+    print(a[3])
+    print('The updated minimum values are: ')
+    print(cutoff_value1,cutoff_value2,cutoff_value3)
+
+
+else:
+    print('OOOOPS!!! You should take care about the minimum teeth requirement for drive and driven gear.')
